@@ -5,12 +5,16 @@
   "main": "index.js",
   "scripts": {
     "build": "./node_modules/typescript/bin/tsc -p tsconfig.json",
-    "call": "./node_modules/ts-node/dist/bin.js index.ts"
+    "call": "./node_modules/ts-node/dist/bin.js src/index.ts"
   },
   "author": "leonid.pyrlia",
   "license": "ISC",
   "devDependencies": {
+    "@types/node-fetch": "^2.5.0",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.0"
   }
 }
