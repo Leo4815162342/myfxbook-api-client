@@ -1,0 +1,16 @@
+{
+  "name": "myfxbook-api-client",
+  "version": "1.0.0",
+  "description": "Myfxbook API for Node.js",
+  "main": "index.js",
+  "scripts": {
+    "build": "./node_modules/typescript/bin/tsc -p tsconfig.json",
+    "call": "./node_modules/ts-node/dist/bin.js index.ts"
+  },
+  "author": "leonid.pyrlia",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
+  }
+}
