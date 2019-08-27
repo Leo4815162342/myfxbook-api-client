@@ -1,11 +1,12 @@
 import fetch from 'node-fetch';
 
-const API_ROOT = 'https://www.myfxbook.com/api';
+import querystring from 'querystring';
+
+const API_ROOT_URL = 'https://www.myfxbook.com/api';
 
 interface ApiConstructor {
-  login: string;
+  email: string;
   password: string;
-  requestHeaders?: Headers;
 }
 
 interface ApiResponseBase {
@@ -13,13 +14,62 @@ interface ApiResponseBase {
   message: string;
 }
 
-interface LoginDataResponse extends ApiResponseBase {
+interface LoginData extends ApiResponseBase {
   session: string;
 }
 
-interface OutlookResponse extends ApiResponseBase {
-  symbols?: OutlookSymbol[];
-  general?: OutlookGeneral;
+interface OutlookData extends ApiResponseBase {
+  symbols: OutlookSymbol[];
+  general: OutlookGeneral;
+}
+
+interface MyAccounts extends ApiResponseBase {
+  accounts: Account[];
+}
+
+interface WatchedAccounts extends ApiResponseBase {
+  accounts: WatchedAccount[];
+}
+
+interface Account {
+  id: number;
+  name: string;
+  description: string;
+  accountId: number;
+  gain: number;
+  absGain: number;
+  daily: number;
+  monthly: number;
+  withdrawals: number;
+  deposits: number;
+  interest: number;
+  profit: number;
+  balance: number;
+  drawdown: number;
+  equity: number;
+  equityPercent: number;
+  demo: boolean;
+  lastUpdateDate: string;
+  creationDate: string;
+  firstTradeDate: string;
+  tracking: number;
+  views: number;
+  commission: number;
+  currency: string;
+  profitFactor: number;
+  pips: number;
+  invitationUrl: string;
+  server: {
+    name: string;
+  };
+}
+
+interface WatchedAccount {
+  name: string;
+  gain: number;
+  drawdown: number;
+  demo: boolean;
+  change: number;
 }
 
 interface OutlookSymbol {
@@ -48,73 +98,145 @@ interface OutlookGeneral {
   totalFunds: string;
 }
 
-
 class MyfxbookApi {
-  private login: string;
+  private email: string;
   private password: string;
-  private session: string = '';
-  private requestHeaders: Headers;
+  private session: string;
 
-  constructor({ login, password, requestHeaders }: ApiConstructor) {
-    this.login = login;
+  private loginApiCall: Promise<LoginData>;
+
+  constructor({ email, password }: ApiConstructor) {
+    this.email = email;
     this.password = password;
   }
 
   private async getSessionId() {
-
     if (!this.session) {
-      const loginData = await this.apiLogin();
-
-      if (loginData.error || !loginData.session) {
-        throw loginData;
-      }
-
+      const loginData = await this.login();
       this.session = loginData.session;
-    } 
+    }
 
     return this.session;
-
   }
 
-  private async apiLogin() {
-    const loginUrl = `${API_ROOT}/login.json?email=${this.login}&password=${this.password}`;
+  private async makeApiCall<T extends ApiResponseBase>(
+    endpoint: string,
+    params: { [key: string]: string }
+  ): Promise<T> {
+    const url = `${API_ROOT_URL}/${endpoint}.json?${querystring.stringify(params)}`;
 
-    const response = await fetch(loginUrl, { method: 'post' });
-    const textResponse = await response.text();
+    const rawResponse = await fetch(url, { method: 'post' });
+    const textResponse = await rawResponse.text();
 
-    let parsedData: LoginDataResponse;
+    let isError = false;
+    let erroMessage = '';
+    let parsedData: T;
 
     try {
       parsedData = JSON.parse(textResponse);
 
-      parsedData = {
-        error: false,
-        message: '',
-        session: this.session
-      };
-
+      if (parsedData.error) {
+        isError = true;
+        erroMessage = parsedData.message;
+      }
     } catch (error) {
-      const loginErrorMessage = `Login error. Error body: ${JSON.stringify(
-        error
-      )}. Original response: ${textResponse}`;
+      const errText = `${endpoint} error: ${JSON.stringify(error)}`;
+      const originalResponse = `Original response: ${JSON.stringify(textResponse)}`;
 
-      parsedData = {
-        error: true,
-        message: loginErrorMessage,
-        session: ''
-      };
+      isError = true;
+      erroMessage = `${errText}. ${originalResponse}`;
+    }
+
+    if (isError) {
+      throw new Error(erroMessage);
     }
 
     return parsedData;
   }
+
+  private async login() {
+    this.loginApiCall =
+      this.loginApiCall ||
+      this.makeApiCall<LoginData>('login', {
+        email: this.email,
+        password: this.password
+      });
+    return this.loginApiCall;
+  }
+
+  private async logout() {
+    return this.makeApiCall<ApiResponseBase>('logout', {
+      session: await this.getSessionId()
+    });
+  }
+
+  public async getMyAccounts() {
+    return this.makeApiCall<MyAccounts>('get-my-accounts', {
+      session: await this.getSessionId()
+    });
+  }
+
+  public async getWatchedAccounts() {
+    return this.makeApiCall<WatchedAccounts>('get-watched-accounts', {
+      session: await this.getSessionId()
+    });
+  }
+
+  public async getCommunityOutlook() {
+    return this.makeApiCall<OutlookData>('get-community-outlook', {
+      session: await this.getSessionId()
+    });
+  }
 }
+
+export default MyfxbookApi;
+
+const myfx = new MyfxbookApi({
+  email: '',
+  password: ''
+});
+
+myfx
+  .getCommunityOutlook()
+  .then(data => console.log(data))
+  .catch(err => console.log(err));
+
+// private async apiLogin() {
+//   const loginUrl = `${API_ROOT_URL}/login.json?email=${this.login}&password=${this.password}`;
+
+//   const response = await fetch(loginUrl, { method: 'post' });
+//   const textResponse = await response.text();
+
+//   let parsedData: LoginData;
+
+//   try {
+//     parsedData = JSON.parse(textResponse);
+
+//     parsedData = {
+//       error: false,
+//       message: '',
+//       session: this.session
+//     };
+
+//   } catch (error) {
+//     const loginErrorMessage = `Login error. Error body: ${JSON.stringify(
+//       error
+//     )}. Original response: ${textResponse}`;
+
+//     parsedData = {
+//       error: true,
+//       message: loginErrorMessage,
+//       session: ''
+//     };
+//   }
+
+//   return parsedData;
+// }
 
 // interface ApiConstructor {
 //   login: string;
 //   password: string;
 // }
-
-
 
 // interface OutlookData {
 //   error: boolean;
@@ -122,8 +244,6 @@ class MyfxbookApi {
 //   symbols?: Symbol[];
 //   general?: General;
 // }
-
-
 
 // export default class OutlookApi {
 //   private login: string;
@@ -146,7 +266,7 @@ class MyfxbookApi {
 //       };
 //     }
 
-//     const outlookUrl = `${API_ROOT}/get-community-outlook.json?session=${session}`;
+//     const outlookUrl = `${API_ROOT_URL}/get-community-outlook.json?session=${session}`;
 
 //     const response = await fetch(outlookUrl, { method: 'post' });
 
@@ -170,7 +290,5 @@ class MyfxbookApi {
 //     return parsedData;
 //   }
 
-
-
-  }
+// }
 // }
