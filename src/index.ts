@@ -31,6 +31,50 @@ interface WatchedAccounts extends ApiResponseBase {
   accounts: WatchedAccount[];
 }
 
+interface OpenOrders extends ApiResponseBase {
+  accounts: OpenOrder[];
+}
+
+interface OpenTrades extends ApiResponseBase {
+  accounts: Trade[];
+}
+
+interface TradeHistory extends ApiResponseBase {
+  history: Trade[];
+}
+
+interface DailyGain extends ApiResponseBase {
+  dailyGain: DayGain[];
+}
+
+interface Gain extends ApiResponseBase {
+  value: number;
+}
+
+interface DayGain {
+  date: string;
+  value: number;
+  profit: number;
+}
+
+interface Trade extends OpenOrder {
+  profit: number;
+  pips: number;
+  swap: number;
+  magic: number;
+}
+
+interface OpenOrder {
+  openTime: string;
+  symbol: string;
+  action: string;
+  sizing: { type: string; value: string };
+  openPrice: number;
+  tp: number;
+  sl: number;
+  comment: string;
+}
+
 interface Account {
   id: number;
   name: string;
@@ -99,21 +143,25 @@ interface OutlookGeneral {
 }
 
 class MyfxbookApi {
-  private email: string;
-  private password: string;
+  private readonly email: string;
+  private readonly password: string;
   private session: string;
 
-  private loginApiCall: Promise<LoginData>;
+  private getLoginDataPromise: Promise<LoginData>;
 
   constructor({ email, password }: ApiConstructor) {
     this.email = email;
     this.password = password;
   }
 
+  /** Get session id (cached value is returned upon subsequent or parallel requests)*/
   private async getSessionId() {
     if (!this.session) {
-      const loginData = await this.login();
-      this.session = loginData.session;
+      this.getLoginDataPromise = this.getLoginDataPromise || this.login();
+
+      const loginData = await this.getLoginDataPromise;
+
+      this.session = this.session || loginData.session;
     }
 
     return this.session;
@@ -154,34 +202,108 @@ class MyfxbookApi {
     return parsedData;
   }
 
+  /**
+   * Fetches login data object
+   */
   private async login() {
-    this.loginApiCall =
-      this.loginApiCall ||
-      this.makeApiCall<LoginData>('login', {
-        email: this.email,
-        password: this.password
-      });
-    return this.loginApiCall;
+    console.log('START LOGIN CALL');
+    return this.makeApiCall<LoginData>('login', {
+      email: this.email,
+      password: this.password
+    });
   }
 
+  /**
+   * Logs out from current session
+   */
   private async logout() {
     return this.makeApiCall<ApiResponseBase>('logout', {
       session: await this.getSessionId()
     });
   }
 
+  /**
+   * Get list of all accounts
+   */
   public async getMyAccounts() {
     return this.makeApiCall<MyAccounts>('get-my-accounts', {
       session: await this.getSessionId()
     });
   }
 
+  /**
+   * Get list of all watched accounts
+   */
   public async getWatchedAccounts() {
     return this.makeApiCall<WatchedAccounts>('get-watched-accounts', {
       session: await this.getSessionId()
     });
   }
 
+  /**
+   * Get all open orders for a given account
+   * @param id identifier of a trading account
+   */
+  public async getOpenOrders(id: number) {
+    return this.makeApiCall<OpenOrders>('get-open-orders', {
+      session: await this.getSessionId(),
+      id: String(id)
+    });
+  }
+
+  /**
+   * Get all open trades for a given account
+   * @param id identifier of a trading account
+   */
+  public async getOpenTrades(id: number) {
+    return this.makeApiCall<OpenTrades>('get-open-trades', {
+      session: await this.getSessionId(),
+      id: String(id)
+    });
+  }
+
+  /**
+   * Get history of all trades for a given account
+   * @param id identifier of a trading account
+   */
+  public async getHistory(id: number) {
+    return this.makeApiCall<TradeHistory>('get-history', {
+      session: await this.getSessionId(),
+      id: String(id)
+    });
+  }
+
+  /**
+   * Get daily breakdown of all gains for a given account within time range
+   * @param id identifier of a trading account
+   * @param start start date, format : yyyy-MM-dd
+   * @param end end date, format : yyyy-MM-dd
+   */
+  public async getDailyGain(id: number, start: string, end: string) {
+    return this.makeApiCall<DailyGain>('get-daily-gain', {
+      session: await this.getSessionId(),
+      id: String(id),
+      start,
+      end
+    });
+  }
+
+  /**
+   * Get total gain for a given account within time range
+   * @param id identifier of a trading account
+   * @param start start date, format : yyyy-MM-dd
+   * @param end end date, format : yyyy-MM-dd
+   */
+  public async getGain(id: number, start: string, end: string) {
+    return this.makeApiCall<Gain>('get-gain', {
+      session: await this.getSessionId(),
+      id: String(id),
+      start,
+      end
+    });
+  }
+
+  /** Get Myfxbook Community Outlook data */
   public async getCommunityOutlook() {
     return this.makeApiCall<OutlookData>('get-community-outlook', {
       session: await this.getSessionId()
@@ -197,98 +319,6 @@ const myfx = new MyfxbookApi({
 });
 
 myfx
-  .getCommunityOutlook()
-  .then(data => console.log(data))
+  .getGain(1018059, '2014-08-19', '2014-08-20')
+  .then(data => console.log(JSON.stringify(data)))
   .catch(err => console.log(err));
-
-// private async apiLogin() {
-//   const loginUrl = `${API_ROOT_URL}/login.json?email=${this.login}&password=${this.password}`;
-
-//   const response = await fetch(loginUrl, { method: 'post' });
-//   const textResponse = await response.text();
-
-//   let parsedData: LoginData;
-
-//   try {
-//     parsedData = JSON.parse(textResponse);
-
-//     parsedData = {
-//       error: false,
-//       message: '',
-//       session: this.session
-//     };
-
-//   } catch (error) {
-//     const loginErrorMessage = `Login error. Error body: ${JSON.stringify(
-//       error
-//     )}. Original response: ${textResponse}`;
-
-//     parsedData = {
-//       error: true,
-//       message: loginErrorMessage,
-//       session: ''
-//     };
-//   }
-
-//   return parsedData;
-// }
-
-// interface ApiConstructor {
-//   login: string;
-//   password: string;
-// }
-
-// interface OutlookData {
-//   error: boolean;
-//   message: string;
-//   symbols?: Symbol[];
-//   general?: General;
-// }
-
-// export default class OutlookApi {
-//   private login: string;
-//   private password: string;
-//   private session: string;
-
-//   constructor({ login, password }: ApiConstructor) {
-//     this.login = login;
-//     this.password = password;
-//     this.session = '';
-//   }
-
-//   public async getOutlookData(): Promise<OutlookData> {
-//     const { error: loginDataError, message, session } = await this.getLoginData();
-
-//     if (loginDataError || !session) {
-//       return {
-//         error: true,
-//         message: message
-//       };
-//     }
-
-//     const outlookUrl = `${API_ROOT_URL}/get-community-outlook.json?session=${session}`;
-
-//     const response = await fetch(outlookUrl, { method: 'post' });
-
-//     const textResponse = await response.text();
-
-//     let parsedData: OutlookData;
-
-//     try {
-//       parsedData = JSON.parse(textResponse);
-//     } catch (error) {
-//       const outlookErrorMessage = `Get outlook data error. Error body: ${JSON.stringify(
-//         error
-//       )}. Original response: ${textResponse}`;
-
-//       parsedData = {
-//         error: true,
-//         message: outlookErrorMessage
-//       };
-//     }
-
-//     return parsedData;
-//   }
-
-// }
-// }
