@@ -1,154 +1,17 @@
 import fetch from 'node-fetch';
 import querystring from 'querystring';
+import * as Myfxbook from './myfxbook-api.interfaces';
 
 const API_ROOT_URL = 'https://www.myfxbook.com/api';
-
-interface ApiConstructor {
-  email: string;
-  password: string;
-}
-
-interface ApiResponseBase {
-  error: boolean;
-  message: string;
-}
-
-interface LoginData extends ApiResponseBase {
-  session: string;
-}
-
-interface OutlookData extends ApiResponseBase {
-  symbols: OutlookSymbol[];
-  general: OutlookGeneral;
-}
-
-interface MyAccounts extends ApiResponseBase {
-  accounts: Account[];
-}
-
-interface WatchedAccounts extends ApiResponseBase {
-  accounts: WatchedAccount[];
-}
-
-interface OpenOrders extends ApiResponseBase {
-  accounts: OpenOrder[];
-}
-
-interface OpenTrades extends ApiResponseBase {
-  accounts: Trade[];
-}
-
-interface TradeHistory extends ApiResponseBase {
-  history: Trade[];
-}
-
-interface DailyGain extends ApiResponseBase {
-  dailyGain: DayGain[];
-}
-
-interface Gain extends ApiResponseBase {
-  value: number;
-}
-
-interface DayGain {
-  date: string;
-  value: number;
-  profit: number;
-}
-
-interface Trade extends OpenOrder {
-  profit: number;
-  pips: number;
-  swap: number;
-  magic: number;
-}
-
-interface OpenOrder {
-  openTime: string;
-  symbol: string;
-  action: string;
-  sizing: { type: string; value: string };
-  openPrice: number;
-  tp: number;
-  sl: number;
-  comment: string;
-}
-
-interface Account {
-  id: number;
-  name: string;
-  description: string;
-  accountId: number;
-  gain: number;
-  absGain: number;
-  daily: number;
-  monthly: number;
-  withdrawals: number;
-  deposits: number;
-  interest: number;
-  profit: number;
-  balance: number;
-  drawdown: number;
-  equity: number;
-  equityPercent: number;
-  demo: boolean;
-  lastUpdateDate: string;
-  creationDate: string;
-  firstTradeDate: string;
-  tracking: number;
-  views: number;
-  commission: number;
-  currency: string;
-  profitFactor: number;
-  pips: number;
-  invitationUrl: string;
-  server: {
-    name: string;
-  };
-}
-
-interface WatchedAccount {
-  name: string;
-  gain: number;
-  drawdown: number;
-  demo: boolean;
-  change: number;
-}
-
-interface OutlookSymbol {
-  name: string;
-  shortPercentage: number;
-  longPercentage: number;
-  shortVolume: number;
-  longVolume: number;
-  longPositions: number;
-  shortPositions: number;
-  totalPositions: number;
-  avgShortPrice: number;
-  avgLongPrice: number;
-}
-
-interface OutlookGeneral {
-  demoAccountsPercentage: number;
-  realAccountsPercentage: number;
-  profitablePercentage: number;
-  nonProfitablePercentage: number;
-  fundsWon: string;
-  fundsLost: string;
-  averageDeposit: string;
-  averageAccountProfit: string;
-  averageAccountLoss: string;
-  totalFunds: string;
-}
 
 class MyfxbookApi {
   private readonly email: string;
   private readonly password: string;
   private session: string;
 
-  private getLoginDataPromise: Promise<LoginData>;
+  private getLoginDataPromise: Promise<Myfxbook.LoginData>;
 
-  constructor({ email, password }: ApiConstructor) {
+  constructor({ email, password }: Myfxbook.ApiConstructor) {
     this.email = email;
     this.password = password;
   }
@@ -166,7 +29,7 @@ class MyfxbookApi {
     return this.session;
   }
 
-  private async makeApiCall<T extends ApiResponseBase>(
+  private async makeApiCall<T extends Myfxbook.ApiResponseBase>(
     endpoint: string,
     params: { [key: string]: string }
   ): Promise<T> {
@@ -205,8 +68,7 @@ class MyfxbookApi {
    * Fetches login data object
    */
   private async login() {
-    console.log('START LOGIN CALL');
-    return this.makeApiCall<LoginData>('login', {
+    return this.makeApiCall<Myfxbook.LoginData>('login', {
       email: this.email,
       password: this.password
     });
@@ -216,7 +78,7 @@ class MyfxbookApi {
    * Logs out from current session
    */
   private async logout() {
-    return this.makeApiCall<ApiResponseBase>('logout', {
+    return this.makeApiCall<Myfxbook.ApiResponseBase>('logout', {
       session: await this.getSessionId()
     });
   }
@@ -225,7 +87,7 @@ class MyfxbookApi {
    * Get list of all accounts
    */
   public async getMyAccounts() {
-    return this.makeApiCall<MyAccounts>('get-my-accounts', {
+    return this.makeApiCall<Myfxbook.MyAccounts>('get-my-accounts', {
       session: await this.getSessionId()
     });
   }
@@ -234,7 +96,7 @@ class MyfxbookApi {
    * Get list of all watched accounts
    */
   public async getWatchedAccounts() {
-    return this.makeApiCall<WatchedAccounts>('get-watched-accounts', {
+    return this.makeApiCall<Myfxbook.WatchedAccounts>('get-watched-accounts', {
       session: await this.getSessionId()
     });
   }
@@ -244,7 +106,7 @@ class MyfxbookApi {
    * @param id id of a trading account
    */
   public async getOpenOrders(id: number | string) {
-    return this.makeApiCall<OpenOrders>('get-open-orders', {
+    return this.makeApiCall<Myfxbook.OpenOrders>('get-open-orders', {
       session: await this.getSessionId(),
       id: String(id)
     });
@@ -255,7 +117,7 @@ class MyfxbookApi {
    * @param id id of a trading account
    */
   public async getOpenTrades(id: number | string) {
-    return this.makeApiCall<OpenTrades>('get-open-trades', {
+    return this.makeApiCall<Myfxbook.OpenTrades>('get-open-trades', {
       session: await this.getSessionId(),
       id: String(id)
     });
@@ -266,7 +128,7 @@ class MyfxbookApi {
    * @param id id of a trading account
    */
   public async getHistory(id: number | string) {
-    return this.makeApiCall<TradeHistory>('get-history', {
+    return this.makeApiCall<Myfxbook.TradeHistory>('get-history', {
       session: await this.getSessionId(),
       id: String(id)
     });
@@ -279,7 +141,7 @@ class MyfxbookApi {
    * @param end end date, format : yyyy-MM-dd
    */
   public async getDailyGain(id: number | string, start: string, end: string) {
-    return this.makeApiCall<DailyGain>('get-daily-gain', {
+    return this.makeApiCall<Myfxbook.DailyGain>('get-daily-gain', {
       session: await this.getSessionId(),
       id: String(id),
       start,
@@ -294,7 +156,7 @@ class MyfxbookApi {
    * @param end end date, format : yyyy-MM-dd
    */
   public async getGain(id: number | string, start: string, end: string) {
-    return this.makeApiCall<Gain>('get-gain', {
+    return this.makeApiCall<Myfxbook.Gain>('get-gain', {
       session: await this.getSessionId(),
       id: String(id),
       start,
@@ -304,7 +166,7 @@ class MyfxbookApi {
 
   /** Get Myfxbook Community Outlook data */
   public async getCommunityOutlook() {
-    return this.makeApiCall<OutlookData>('get-community-outlook', {
+    return this.makeApiCall<Myfxbook.OutlookData>('get-community-outlook', {
       session: await this.getSessionId()
     });
   }
