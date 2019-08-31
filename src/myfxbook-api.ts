@@ -39,7 +39,7 @@ class MyfxbookApi {
     const textResponse = await rawResponse.text();
 
     let isError = false;
-    let erroMessage = '';
+    let errorMessage = '';
     let parsedData: T;
 
     try {
@@ -47,18 +47,18 @@ class MyfxbookApi {
 
       if (parsedData.error) {
         isError = true;
-        erroMessage = parsedData.message;
+        errorMessage = parsedData.message;
       }
     } catch (error) {
       const errText = `${endpoint} error: ${JSON.stringify(error)}`;
       const originalResponse = `Original response: ${JSON.stringify(textResponse)}`;
 
       isError = true;
-      erroMessage = `${errText}. ${originalResponse}`;
+      errorMessage = `${errText}. ${originalResponse}`;
     }
 
     if (isError) {
-      throw new Error(erroMessage);
+      throw new Error(errorMessage);
     }
 
     return parsedData;
