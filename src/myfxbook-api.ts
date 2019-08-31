@@ -170,6 +170,17 @@ class MyfxbookApi {
       session: await this.getSessionId()
     });
   }
+
+  /**
+   * Get community outlook data broken down by a country for provided symbol
+   * @param symbol a trading instrument (currency pair)
+   */
+  public async getCommunityOutlookByCountry(symbol: string) {
+    return this.makeApiCall<Myfxbook.OutlookDataByCountry>('get-community-outlook-by-country', {
+      session: await this.getSessionId(),
+      symbol
+    });
+  }
 }
 
 export default MyfxbookApi;

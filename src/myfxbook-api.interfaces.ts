@@ -17,6 +17,10 @@ export interface OutlookData extends ApiResponseBase {
   general: OutlookGeneral;
 }
 
+export interface OutlookDataByCountry extends ApiResponseBase {
+  countries: OutlookCountry[];
+}
+
 export interface MyAccounts extends ApiResponseBase {
   accounts: TradingAccount[];
 }
@@ -45,20 +49,20 @@ export interface Gain extends ApiResponseBase {
   value: number;
 }
 
-export interface DayGain {
+interface DayGain {
   date: string;
   value: number;
   profit: number;
 }
 
-export interface Trade extends OpenOrder {
+interface Trade extends OpenOrder {
   profit: number;
   pips: number;
   swap: number;
   magic: number;
 }
 
-export interface OpenOrder {
+interface OpenOrder {
   openTime: string;
   symbol: string;
   action: string;
@@ -69,7 +73,7 @@ export interface OpenOrder {
   comment: string;
 }
 
-export interface TradingAccount {
+interface TradingAccount {
   id: number;
   name: string;
   description: string;
@@ -102,7 +106,7 @@ export interface TradingAccount {
   };
 }
 
-export interface WatchedAccount {
+interface WatchedAccount {
   name: string;
   gain: number;
   drawdown: number;
@@ -110,7 +114,7 @@ export interface WatchedAccount {
   change: number;
 }
 
-export interface OutlookSymbol {
+interface OutlookSymbol {
   name: string;
   shortPercentage: number;
   longPercentage: number;
@@ -123,7 +127,7 @@ export interface OutlookSymbol {
   avgLongPrice: number;
 }
 
-export interface OutlookGeneral {
+interface OutlookGeneral {
   demoAccountsPercentage: number;
   realAccountsPercentage: number;
   profitablePercentage: number;
@@ -134,4 +138,13 @@ export interface OutlookGeneral {
   averageAccountProfit: string;
   averageAccountLoss: string;
   totalFunds: string;
+}
+
+interface OutlookCountry {
+  name: string;
+  code: string;
+  longVolume: number;
+  shortVolume: number;
+  longPositions: number;
+  shortPositions: number;
 }
