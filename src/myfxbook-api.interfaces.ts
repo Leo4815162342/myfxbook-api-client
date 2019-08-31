@@ -49,6 +49,10 @@ export interface Gain extends ApiResponseBase {
   value: number;
 }
 
+export interface DailyData extends ApiResponseBase {
+  dataDaily: DayData[];
+}
+
 interface DayGain {
   date: string;
   value: number;
@@ -147,4 +151,15 @@ interface OutlookCountry {
   shortVolume: number;
   longPositions: number;
   shortPositions: number;
+}
+
+interface DayData {
+  date: string;
+  balance: number;
+  pips: number;
+  lots: number;
+  floatingPL: number;
+  profit: number;
+  growthEquity: number;
+  floatingPips: number;
 }

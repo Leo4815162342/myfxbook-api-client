@@ -181,6 +181,21 @@ class MyfxbookApi {
       symbol
     });
   }
+
+  /**
+   * Get daily breakdown of all account data within time range
+   * @param id id of a trading account
+   * @param start start date, format : yyyy-MM-dd
+   * @param end end date, format : yyyy-MM-dd
+   */
+  public async getDailyData(id: number | string, start: string, end: string) {
+    return this.makeApiCall<Myfxbook.DailyData>('get-data-daily', {
+      session: await this.getSessionId(),
+      id: String(id),
+      start,
+      end
+    });
+  }
 }
 
 export default MyfxbookApi;
