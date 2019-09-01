@@ -84,7 +84,7 @@ class MyfxbookApi {
   }
 
   /**
-   * Fetches list of all trading accounts
+   * Get list of all trading accounts
    */
   public async getMyAccounts() {
     return this.makeApiCall<Myfxbook.MyAccounts>('get-my-accounts', {
@@ -164,7 +164,7 @@ class MyfxbookApi {
     });
   }
 
-  /** Get Myfxbook Community Outlook data */
+  /** Get Myfxbook Community Outlook data (https://www.myfxbook.com/community/outlook) */
   public async getCommunityOutlook() {
     return this.makeApiCall<Myfxbook.OutlookData>('get-community-outlook', {
       session: await this.getSessionId()

@@ -8,6 +8,6 @@ const myfx = new MyfxbookApi({
 });
 
 myfx
-  .getDailyGain(631370, '2013-03-22', '2013-03-27')
+  .getDailyData(631370, '2013-03-22', '2013-03-27')
   .then(data => console.log(JSON.stringify(data)))
   .catch(err => console.log(err));

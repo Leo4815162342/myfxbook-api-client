@@ -62,7 +62,7 @@ client
   .catch(error => ('error', error));
 ```
 
-<details><summary>View sample response:</summary>
+<details><summary>View sample response</summary>
 <p>
   
 ```json
@@ -128,7 +128,7 @@ client
   .catch(error => ('error', error));
 ```
 
-<details><summary>View sample response:</summary>
+<details><summary>View sample response</summary>
 <p>
   
 ```json
@@ -158,7 +158,7 @@ Get all open orders for a given account
 
 Arguments:
 
-- `id` - id of a trading account
+- `id` - _id of a trading account_
 
 ```javascript
 const { MyfxbookApi } = require('myfxbook-api-client');
@@ -173,7 +173,7 @@ client
   .catch(error => ('error', error));
 ```
 
-<details><summary>View sample response:</summary>
+<details><summary>View sample response</summary>
 <p>
   
 ```json
@@ -209,7 +209,7 @@ Get all open trades for a given account
 
 Arguments:
 
-- `id` - id of a trading account
+- `id` - _id of a trading account_
 
 ```javascript
 const { MyfxbookApi } = require('myfxbook-api-client');
@@ -224,7 +224,7 @@ client
   .catch(error => ('error', error));
 ```
 
-<details><summary>View sample response:</summary>
+<details><summary>View sample response</summary>
 <p>
   
 ```json
@@ -260,7 +260,7 @@ Get history of all trades for a given account
 
 Arguments:
 
-- `id` - id of a trading account
+- `id` - _id of a trading account_
 
 ```javascript
 const { MyfxbookApi } = require('myfxbook-api-client');
@@ -275,7 +275,7 @@ client
   .catch(error => ('error', error));
 ```
 
-<details><summary>View sample response:</summary>
+<details><summary>View sample response</summary>
 <p>
   
 ```json
@@ -317,9 +317,9 @@ Get daily breakdown of all gains for a given account within time range
 
 Arguments:
 
-- `id` - id of a trading account
-- `start` - start date, format : yyyy-MM-dd
-- `end` - end date, format : yyyy-MM-dd
+- `id` - _id of a trading account_
+- `start` - _start date, format : yyyy-MM-dd_
+- `end` - _end date, format : yyyy-MM-dd_
 
 ```javascript
 const { MyfxbookApi } = require('myfxbook-api-client');
@@ -334,7 +334,7 @@ client
   .catch(error => ('error', error));
 ```
 
-<details><summary>View sample response:</summary>
+<details><summary>View sample response</summary>
 <p>
   
 ```json
@@ -362,9 +362,9 @@ Get total gain for a given account within time range
 
 Arguments:
 
-- `id` - id of a trading account
-- `start` - start date, format : yyyy-MM-dd
-- `end` - end date, format : yyyy-MM-dd
+- `id` - _id of a trading account_
+- `start` - _start date, format : yyyy-MM-dd_
+- `end` - _end date, format : yyyy-MM-dd_
 
 ```javascript
 const { MyfxbookApi } = require('myfxbook-api-client');
@@ -379,7 +379,7 @@ client
   .catch(error => ('error', error));
 ```
 
-<details><summary>View sample response:</summary>
+<details><summary>View sample response</summary>
 <p>
   
 ```json
@@ -387,6 +387,159 @@ client
  "error": false,
  "message": "",
  "value": 86.69
+}
+```
+
+</p>
+</details>
+
+---
+
+### **`getCommunityOutlook()`**
+
+Get Myfxbook Community Outlook data (https://www.myfxbook.com/community/outlook)
+
+```javascript
+const { MyfxbookApi } = require('myfxbook-api-client');
+
+const client = new MyfxbookApi({ email: 'my@email.com', password: 'my_password' });
+
+client
+  .getCommunityOutlook()
+  .then(data => {
+    console.log(data.symbols);
+    console.log(data.general);
+  })
+  .catch(error => ('error', error));
+```
+
+<details><summary>View sample response</summary>
+<p>
+  
+```json
+{
+ "error": false,
+ "message": "",
+ "symbols": [
+  {
+   "name": "EURUSD",
+   "shortPercentage": 55,
+   "longPercentage": 44,
+   "shortVolume": 1142.58,
+   "longVolume": 905.47,
+   "longPositions": 2932,
+   "shortPositions": 3888,
+   "totalPositions": 2048,
+   "avgShortPrice":1.3808,
+   "avgLongPrice":1.4097
+  }
+ ],
+ "general": {
+  "demoAccountsPercentage": 43,
+  "realAccountsPercentage": 56,
+  "profitablePercentage": 54,
+  "nonProfitablePercentage": 45,
+  "fundsWon": "6,819,251.63",
+  "fundsLost": "-8,740,646.15",
+  "averageDeposit": "21,740.16",
+  "averageAccountProfit": "4,127.88",
+  "averageAccountLoss": "-5,290.95",
+  "totalFunds": "35,914,737.56"
+ }
+}
+```
+
+</p>
+</details>
+
+---
+
+### **`getCommunityOutlookByCountry(symbol)`**
+
+Get community outlook data broken down by a country for provided symbol
+
+Arguments:
+
+- `symbol` - a trading instrument (currency pair)
+
+```javascript
+const { MyfxbookApi } = require('myfxbook-api-client');
+
+const client = new MyfxbookApi({ email: 'my@email.com', password: 'my_password' });
+
+client
+  .getCommunityOutlookByCountry('eurusd')
+  .then(data => {
+    console.log(data.countries);
+  })
+  .catch(error => ('error', error));
+```
+
+<details><summary>View sample response</summary>
+<p>
+  
+```json
+{
+ "error": false,
+ "message": "",
+ "countries": [
+  {
+   "name": "GERMANY",
+   "code": "DE",
+   "longVolume": 13.71,
+   "shortVolume": 35.76,
+   "longPositions": 111,
+   "shortPositions": 489
+  }
+ ]
+}
+```
+
+</p>
+</details>
+
+### **`getDailyData(id, start, end)`**
+
+Get daily breakdown of all account data within time range
+
+Arguments:
+
+- `id` - _id of a trading account_
+- `start` - _start date, format : yyyy-MM-dd_
+- `end` - _end date, format : yyyy-MM-dd_
+
+```javascript
+const { MyfxbookApi } = require('myfxbook-api-client');
+
+const client = new MyfxbookApi({ email: 'my@email.com', password: 'my_password' });
+
+client
+  .getDailyData(12345, '2019-02-01', '2019-02-07')
+  .then(data => {
+    console.log(data.dataDaily);
+  })
+  .catch(error => ('error', error));
+```
+
+<details><summary>View sample response</summary>
+<p>
+  
+```json
+{
+ "error": false,
+ "message": "",
+ "dataDaily":[
+  [{
+   "date": "02/01/2010",
+   "balance": 25083.56,
+   "pips": 83.30,
+   "lots": 0.41,
+   "floatingPL": -500.00,
+   "profit": 84.7400,
+   "growthEquity": -4.15,
+   "floatingPips": 1.00
+  }]
+ ]
 }
 ```
 

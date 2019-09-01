@@ -50,7 +50,7 @@ export interface Gain extends ApiResponseBase {
 }
 
 export interface DailyData extends ApiResponseBase {
-  dataDaily: DayData[];
+  dataDaily: Array<[DayData]>;
 }
 
 interface DayGain {
