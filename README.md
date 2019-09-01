@@ -62,7 +62,7 @@ client
 
 <details><summary>View sample response:</summary>
 <p>
-
+  
 ```json
 {
   "error": false,
@@ -107,6 +107,5 @@ client
 </p>
 </details>
 
-#### Response:
 
 
