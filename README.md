@@ -346,7 +346,7 @@ client
 {
  "error": false,
  "message": "",
- "dailyGain":  [
+ "dailyGain": [
   [{
    "date": "02/01/2010",
    "value": 0.07,
@@ -502,6 +502,8 @@ client
 
 </p>
 </details>
+
+---
 
 ### **`getDailyData(id, start, end)`**
 
