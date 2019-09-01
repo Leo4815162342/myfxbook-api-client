@@ -7,4 +7,31 @@
   <a href="https://github.com/facebook/jest"><img src="https://img.shields.io/badge/tested_with-jest-99424f.svg" alt="dukascopy-node tested with jest"></a>
 </p>
 
+A Node.js client for working with Myfxbook API - https://www.myfxbook.com/api
 
+## Installation
+
+#### via npm:
+
+```bash
+npm install myfxbook-api-client --save
+```
+
+#### via yarn:
+
+```bash
+yarn add myfxbook-api-client
+```
+
+## Usage
+
+
+#### require:
+```javascript
+const { MyfxbookApi } = require('myfxbook-api-client');
+```
+
+#### es6 import:
+```javascript
+import { MyfxbookApi } from 'myfxbook-api-client';
+```
