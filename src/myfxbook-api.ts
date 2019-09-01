@@ -84,7 +84,7 @@ class MyfxbookApi {
   }
 
   /**
-   * Get list of all accounts
+   * Fetches list of all trading accounts
    */
   public async getMyAccounts() {
     return this.makeApiCall<Myfxbook.MyAccounts>('get-my-accounts', {

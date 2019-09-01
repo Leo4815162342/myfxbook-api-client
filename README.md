@@ -45,7 +45,7 @@ const client = new MyfxbookApi({ email: 'my@email.com', password: 'my_password' 
 
 ### **`getMyAccounts()`**
 
-Fetches list of all trading accounts
+Get list of all trading accounts
 
 ```javascript
 const { MyfxbookApi } = require('myfxbook-api-client');
@@ -107,5 +107,139 @@ client
 </p>
 </details>
 
+### **`getWatchedAccounts()`**
 
+Get list of all watched accounts
 
+```javascript
+const { MyfxbookApi } = require('myfxbook-api-client');
+
+const client = new MyfxbookApi({ email: 'my@email.com', password: 'my_password' });
+
+client
+  .getWatchedAccounts()
+  .then(data => {
+    console.log(data.accounts);
+  })
+  .catch(error => ('error', error));
+```
+
+<details><summary>View sample response:</summary>
+<p>
+  
+```json
+{
+  "error": false,
+  "message": "",
+  "accounts":  [
+    {
+    "name": "Holy Grail",
+    "gain": 8.92,
+    "drawdown": 53.53,
+    "demo": true,
+    "change": 1.53,
+  }
+  ]
+}
+```
+
+</p>
+</details>
+
+### **`getOpenOrders(id)`**
+
+Get all open orders for a given account
+
+Arguments:
+
+- `id` - id of a trading account
+
+```javascript
+const { MyfxbookApi } = require('myfxbook-api-client');
+
+const client = new MyfxbookApi({ email: 'my@email.com', password: 'my_password' });
+
+client
+  .getOpenOrders(12345)
+  .then(data => {
+    console.log(data.openOrders);
+  })
+  .catch(error => ('error', error));
+```
+
+<details><summary>View sample response:</summary>
+<p>
+  
+```json
+{
+ "error": false,
+ "message": "",
+ "openOrders":  [
+    {
+   "openTime": "03/01/2010 13:52",
+   "symbol": "GBPUSD",
+   "action": "Sell Limit",
+   "sizing":    {
+    "type": "lots",
+    "value": "0.08"
+   },
+   "openPrice": 1.4932,
+   "tp": 1.4882,
+   "sl": 0,
+   "comment":"Best trade ever"
+  }
+ ]
+}
+```
+
+</p>
+</details>
+
+### **`getOpenTrades(id)`**
+
+Get all open trades for a given account
+
+Arguments:
+
+- `id` - id of a trading account
+
+```javascript
+const { MyfxbookApi } = require('myfxbook-api-client');
+
+const client = new MyfxbookApi({ email: 'my@email.com', password: 'my_password' });
+
+client
+  .getOpenTrades(12345)
+  .then(data => {
+    console.log(data.openTrades);
+  })
+  .catch(error => ('error', error));
+```
+
+<details><summary>View sample response:</summary>
+<p>
+  
+```json
+{
+ "error": false,
+ "message": "",
+ "openOrders":  [
+    {
+   "openTime": "03/01/2010 13:52",
+   "symbol": "GBPUSD",
+   "action": "Sell Limit",
+   "sizing":    {
+    "type": "lots",
+    "value": "0.08"
+   },
+   "openPrice": 1.4932,
+   "tp": 1.4882,
+   "sl": 0,
+   "comment":"Best trade ever"
+  }
+ ]
+}
+```
+
+</p>
+</details>
