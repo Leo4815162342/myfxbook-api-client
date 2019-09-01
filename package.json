@@ -10,6 +10,16 @@
   },
   "author": "leonid.pyrlia",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Leo4815162342/myfxbook-api-client.git"
+  },
+  "keywords": [
+    "myfxbook",
+    "forex",
+    "api",
+    "metatrader"
+  ],
   "devDependencies": {
     "@types/jest": "^24.0.18",
     "@types/node": "^12.7.2",
