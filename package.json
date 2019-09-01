@@ -2,7 +2,8 @@
   "name": "myfxbook-api-client",
   "version": "1.0.0",
   "description": "Myfxbook API client for Node.js",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "test": "./node_modules/jest/bin/jest.js",
     "build": "./node_modules/typescript/bin/tsc -p tsconfig.json",
