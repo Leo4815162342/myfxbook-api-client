@@ -25,6 +25,8 @@ yarn add myfxbook-api-client
 
 ## Usage
 
+> `email` and `password` are credentials to your myfxbook.com account
+
 #### require:
 
 ```javascript
@@ -40,8 +42,6 @@ import { MyfxbookApi } from 'myfxbook-api-client';
 
 const client = new MyfxbookApi({ email: 'my@email.com', password: 'my_password' });
 ```
-
-> `email` and `password` are credentials to your myfxbook.com account
 
 ## Methods
 
