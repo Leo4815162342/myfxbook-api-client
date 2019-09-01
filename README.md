@@ -1,6 +1,6 @@
-<p align="center"><img width="150" src="https://github.com/Leo4815162342/myfxbook-api-client/blob/master/myfxbook-api-client-logo.png?raw=true" alt="dukascopy-node"></p>
-
 <h1 align="center">Myfxbook API Client</h1>
+
+<p align="center"><img width="150" src="https://github.com/Leo4815162342/myfxbook-api-client/blob/master/myfxbook-api-client-logo.png?raw=true" alt="myfxbook-api-client"></p>
 
 <p align="center">
   <a href="https://travis-ci.org/Leo4815162342/myfxbook-api-client"><img src="https://api.travis-ci.org/Leo4815162342/myfxbook-api-client.svg?branch=master" alt="Build Status"></a>
