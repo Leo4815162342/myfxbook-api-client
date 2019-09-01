@@ -1,6 +1,6 @@
 import MyfxbookApi from './myfxbook-api';
-
-export { MyfxbookApi };
+import * as interfaces from './myfxbook-api.interfaces';
+export { MyfxbookApi, interfaces };
 
 const myfx = new MyfxbookApi({
   email: '',
@@ -8,6 +8,6 @@ const myfx = new MyfxbookApi({
 });
 
 myfx
-  .getCommunityOutlookByCountry('eurusd')
+  .getDailyGain(631370, '2013-03-22', '2013-03-27')
   .then(data => console.log(JSON.stringify(data)))
   .catch(err => console.log(err));

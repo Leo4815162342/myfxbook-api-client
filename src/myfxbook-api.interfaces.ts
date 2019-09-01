@@ -42,7 +42,7 @@ export interface TradeHistory extends ApiResponseBase {
 }
 
 export interface DailyGain extends ApiResponseBase {
-  dailyGain: DayGain[];
+  dailyGain: Array<[DayGain]>;
 }
 
 export interface Gain extends ApiResponseBase {

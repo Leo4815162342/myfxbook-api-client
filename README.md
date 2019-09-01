@@ -41,6 +41,8 @@ import { MyfxbookApi } from 'myfxbook-api-client';
 const client = new MyfxbookApi({ email: 'my@email.com', password: 'my_password' });
 ```
 
+> `email` and `password` are credentials to your myfxbook.com account
+
 ## Methods
 
 ### **`getMyAccounts()`**
@@ -107,6 +109,8 @@ client
 </p>
 </details>
 
+---
+
 ### **`getWatchedAccounts()`**
 
 Get list of all watched accounts
@@ -131,20 +135,22 @@ client
 {
   "error": false,
   "message": "",
-  "accounts":  [
+  "accounts": [
     {
-    "name": "Holy Grail",
-    "gain": 8.92,
-    "drawdown": 53.53,
-    "demo": true,
-    "change": 1.53,
-  }
+      "name": "Holy Grail",
+      "gain": 8.92,
+      "drawdown": 53.53,
+      "demo": true,
+      "change": 1.53,
+    }
   ]
 }
 ```
 
 </p>
 </details>
+
+---
 
 ### **`getOpenOrders(id)`**
 
@@ -174,12 +180,12 @@ client
 {
  "error": false,
  "message": "",
- "openOrders":  [
-    {
+ "openOrders": [
+  {
    "openTime": "03/01/2010 13:52",
    "symbol": "GBPUSD",
    "action": "Sell Limit",
-   "sizing":    {
+   "sizing": {
     "type": "lots",
     "value": "0.08"
    },
@@ -194,6 +200,8 @@ client
 
 </p>
 </details>
+
+---
 
 ### **`getOpenTrades(id)`**
 
@@ -223,12 +231,12 @@ client
 {
  "error": false,
  "message": "",
- "openOrders":  [
-    {
+ "openOrders": [
+  {
    "openTime": "03/01/2010 13:52",
    "symbol": "GBPUSD",
    "action": "Sell Limit",
-   "sizing":    {
+   "sizing": {
     "type": "lots",
     "value": "0.08"
    },
@@ -238,6 +246,147 @@ client
    "comment":"Best trade ever"
   }
  ]
+}
+```
+
+</p>
+</details>
+
+---
+
+### **`getHistory(id)`**
+
+Get history of all trades for a given account
+
+Arguments:
+
+- `id` - id of a trading account
+
+```javascript
+const { MyfxbookApi } = require('myfxbook-api-client');
+
+const client = new MyfxbookApi({ email: 'my@email.com', password: 'my_password' });
+
+client
+  .getHistory(12345)
+  .then(data => {
+    console.log(data.history);
+  })
+  .catch(error => ('error', error));
+```
+
+<details><summary>View sample response:</summary>
+<p>
+  
+```json
+{
+ "error": false,
+ "message": "",
+ "history": [
+  {
+   "openTime": "03/01/2010 14:13",
+   "closeTime": "03/01/2010 15:26",
+   "symbol": "GBPUSD",
+   "action": "Buy Limit",
+   "sizing": {
+    "type": "lots",
+    "value": "0.04"
+   },
+   "openPrice": 1.4831,
+   "closePrice": 1.4934,
+   "tp": 1.4881,
+   "sl": 0,
+   "comment":"best trade ever",
+   "pips": 0,
+   "profit": 0,
+   "interest": 12.1,
+   "commission": 0
+  }
+ ]
+}
+```
+
+</p>
+</details>
+
+---
+
+### **`getDailyGain(id, start, end)`**
+
+Get daily breakdown of all gains for a given account within time range
+
+Arguments:
+
+- `id` - id of a trading account
+- `start` - start date, format : yyyy-MM-dd
+- `end` - end date, format : yyyy-MM-dd
+
+```javascript
+const { MyfxbookApi } = require('myfxbook-api-client');
+
+const client = new MyfxbookApi({ email: 'my@email.com', password: 'my_password' });
+
+client
+  .getDailyGain(12345, '2019-02-01', '2019-02-07')
+  .then(data => {
+    console.log(data.dailyGain);
+  })
+  .catch(error => ('error', error));
+```
+
+<details><summary>View sample response:</summary>
+<p>
+  
+```json
+{
+ "error": false,
+ "message": "",
+ "dailyGain":  [
+  [{
+   "date": "02/01/2010",
+   "value": 0.07,
+   "profit": 0.03
+  }]
+ ]
+}
+```
+
+</p>
+</details>
+
+---
+
+### **`getGain(id, start, end)`**
+
+Get total gain for a given account within time range
+
+Arguments:
+
+- `id` - id of a trading account
+- `start` - start date, format : yyyy-MM-dd
+- `end` - end date, format : yyyy-MM-dd
+
+```javascript
+const { MyfxbookApi } = require('myfxbook-api-client');
+
+const client = new MyfxbookApi({ email: 'my@email.com', password: 'my_password' });
+
+client
+  .getGain(12345, '2019-02-01', '2019-02-07')
+  .then(data => {
+    console.log(data.value);
+  })
+  .catch(error => ('error', error));
+```
+
+<details><summary>View sample response:</summary>
+<p>
+  
+```json
+{
+ "error": false,
+ "message": "",
+ "value": 86.69
 }
 ```
 
