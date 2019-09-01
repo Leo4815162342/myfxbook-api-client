@@ -231,23 +231,28 @@ client
 {
  "error": false,
  "message": "",
- "openOrders": [
-  {
-   "openTime": "03/01/2010 13:52",
-   "symbol": "GBPUSD",
-   "action": "Sell Limit",
-   "sizing": {
-    "type": "lots",
-    "value": "0.08"
-   },
-   "openPrice": 1.4932,
-   "tp": 1.4882,
-   "sl": 0,
-   "comment":"Best trade ever"
-  }
- ]
+ "openTrades": [
+    {
+      "openTime": "03/01/2010 13:39",
+      "symbol": "GBPUSD",
+      "action": "Sell",
+      "sizing":    {
+        "type": "lots",
+        "value": "0.01"
+      },
+      "openPrice": 1.4802,
+      "tp": 1.4832,
+      "sl": 0,
+      "comment":"best trade ever",
+      "profit": -10.8,
+      "pips": -108,
+      "swap": 0,
+      "magic": 24129962
+    }
+  ]
 }
-```
+
+````
 
 </p>
 </details>
@@ -273,7 +278,7 @@ client
     console.log(data.history);
   })
   .catch(error => ('error', error));
-```
+````
 
 <details><summary>View sample response</summary>
 <p>
