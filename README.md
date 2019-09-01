@@ -59,7 +59,9 @@ client
   .then(data => {
     console.log(data.accounts);
   })
-  .catch(error => ('error', error));
+  .catch(error => {
+    console.log('error', error);
+  });
 ```
 
 <details><summary>View sample response</summary>
@@ -125,7 +127,9 @@ client
   .then(data => {
     console.log(data.accounts);
   })
-  .catch(error => ('error', error));
+  .catch(error => {
+    console.log('error', error);
+  });
 ```
 
 <details><summary>View sample response</summary>
@@ -170,7 +174,9 @@ client
   .then(data => {
     console.log(data.openOrders);
   })
-  .catch(error => ('error', error));
+  .catch(error => {
+    console.log('error', error);
+  });
 ```
 
 <details><summary>View sample response</summary>
@@ -221,7 +227,9 @@ client
   .then(data => {
     console.log(data.openTrades);
   })
-  .catch(error => ('error', error));
+  .catch(error => {
+    console.log('error', error);
+  });
 ```
 
 <details><summary>View sample response</summary>
@@ -277,7 +285,9 @@ client
   .then(data => {
     console.log(data.history);
   })
-  .catch(error => ('error', error));
+  .catch(error => {
+    console.log('error', error)}
+  );
 ````
 
 <details><summary>View sample response</summary>
@@ -336,7 +346,9 @@ client
   .then(data => {
     console.log(data.dailyGain);
   })
-  .catch(error => ('error', error));
+  .catch(error => {
+    console.log('error', error);
+  });
 ```
 
 <details><summary>View sample response</summary>
@@ -381,7 +393,9 @@ client
   .then(data => {
     console.log(data.value);
   })
-  .catch(error => ('error', error));
+  .catch(error => {
+    console.log('error', error);
+  });
 ```
 
 <details><summary>View sample response</summary>
@@ -415,7 +429,9 @@ client
     console.log(data.symbols);
     console.log(data.general);
   })
-  .catch(error => ('error', error));
+  .catch(error => {
+    console.log('error', error);
+  });
 ```
 
 <details><summary>View sample response</summary>
@@ -477,7 +493,9 @@ client
   .then(data => {
     console.log(data.countries);
   })
-  .catch(error => ('error', error));
+  .catch(error => {
+    console.log('error', error);
+  });
 ```
 
 <details><summary>View sample response</summary>
@@ -525,7 +543,9 @@ client
   .then(data => {
     console.log(data.dataDaily);
   })
-  .catch(error => ('error', error));
+  .catch(error => {
+    console.log('error', error);
+  });
 ```
 
 <details><summary>View sample response</summary>
