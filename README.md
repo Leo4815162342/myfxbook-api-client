@@ -47,8 +47,6 @@ const client = new MyfxbookApi({ email: 'my@email.com', password: 'my_password' 
 
 Fetches list of all trading accounts
 
-#### Example:
-
 ```javascript
 const { MyfxbookApi } = require('myfxbook-api-client');
 
@@ -62,7 +60,8 @@ client
   .catch(error => ('error', error));
 ```
 
-#### Response:
+<details><summary>View sample response:</summary>
+<p>
 
 ```json
 {
@@ -104,3 +103,10 @@ client
   ]
 }
 ```
+
+</p>
+</details>
+
+#### Response:
+
+
